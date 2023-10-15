@@ -1,0 +1,145 @@
+<!--
+  Hey there AI-hacker! 👨‍💻🤖<=>🚀
+  Ping me on Telegram @VSmelov if you have any suggestions, or just want to share some feedback.
+  Always down for some cyber chats! 😎👾🛰️
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIgentX</title>
+    <script src="https://c0f4f41c-2f55-4863-921b-sdk-docs.github.io/cdn/metamask-sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.x/dist/web3.min.js"></script>
+    <style>
+        body {
+            background-color: black;
+            color: green;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            margin-top: 10px;
+            background-color: green;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        textarea {
+            margin-top: 10px;
+            width: 400px;
+            height: 100px;
+            resize: none;
+        }
+        textarea {
+            background-color: black;
+            color: green;
+            border: 1px solid green;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: limegreen;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<button id="connectWallet">1. Connect to MetaMask</button>
+<p id="walletAddress"></p>
+<p id="tokenBalance"></p>
+
+<textarea id="messageToSign" readonly></textarea>
+<button id="signMessage">2. Sign</button>
+<textarea id="signedMessage" readonly></textarea>
+<button id="copyToClipboard">3. Copy to Clipboard</button>
+<p>Send the signature to the AIgentX Bot</p>
+
+<script>
+    const TOKEN_ADDRESS = '0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5';
+    const ABI = [{"inputs":[{"internalType":"address","name":"_treasury","type":"address"},{"internalType":"uint256","name":"_buyFeeNumeratorValue","type":"uint256"},{"internalType":"uint256","name":"_sellFeeNumeratorValue","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[],"name":"BlacklistAddRestrictedForever","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"flag","type":"bool"}],"name":"BlacklistSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"BuyFeeNumeratorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"BuyFeePaid","type":"event"},{"anonymous":false,"inputs":[],"name":"FeesLockedForever","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"pair","type":"address"},{"indexed":false,"internalType":"bool","name":"enabled","type":"bool"}],"name":"LPPairSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":false,"internalType":"bool","name":"flag","type":"bool"}],"name":"LiquidityHolderSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"SellFeeNumeratorSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"SellFeePaid","type":"event"},{"anonymous":false,"inputs":[],"name":"SniperBotProtectionDisabledForever","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"treasury","type":"address"}],"name":"TreasurySet","type":"event"},{"inputs":[],"name":"DENOMINATOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_BUY_FEE_NUMERATOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"MAX_SELL_FEE_NUMERATOR","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"_sellFeeNumerator","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"accountInfo","outputs":[{"internalType":"bool","name":"isLPPool","type":"bool"},{"internalType":"bool","name":"isLiquidityHolder","type":"bool"},{"internalType":"bool","name":"isBlackListed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"blacklistAddRestrictedForever","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"buyFeeNumerator","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"disableSniperBotProtectionForever","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"feesAreLockedForever","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lockFeesForever","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"restrictBlacklistAddForever","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"sellFeeNumerator","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"bool","name":"isBlacklisted","type":"bool"}],"name":"setBlacklisted","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"setBuyFeeNumerator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"bool","name":"flag","type":"bool"}],"name":"setLiquidityHolder","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"pair","type":"address"},{"internalType":"bool","name":"enabled","type":"bool"}],"name":"setLpPair","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"value","type":"uint256"}],"name":"setSellFeeNumerator","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_treasury","type":"address"}],"name":"setTreasury","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"sniperBotProtectionDisabledForever","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"treasury","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}];
+    const MIN_TOKEN_AMOUNT = BigInt(100000) * BigInt(1e18);
+    const web3 = new Web3(window.ethereum);
+
+    const groupId = new URLSearchParams(window.location.search).get('groupId');
+    const messageText = `I want my group ${groupId} to step into AI Future`;
+
+    document.getElementById("messageToSign").value = messageText;
+
+    document.getElementById("connectWallet").addEventListener('click', connectWallet);
+    document.getElementById("signMessage").addEventListener('click', signMessage);
+    document.getElementById("copyToClipboard").addEventListener('click', copySignatureToClipboard);
+    window.addEventListener('load', initializeApp);
+
+    async function connectWallet() {
+        const isConnected = await checkWalletConnection();
+        if (!isConnected) {
+            try {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                await checkWalletConnection();
+            } catch (error) {
+                console.error("Error connecting to MetaMask:", error);
+                alert("Failed to connect to MetaMask.");
+            }
+        } else {
+            alert("Already connected to MetaMask.");
+        }
+    }
+
+    async function signMessage() {
+        const accounts = await web3.eth.getAccounts();
+        if (!accounts.length) {
+            alert("Please connect to MetaMask first.");
+            return;
+        }
+
+        const signature = await web3.eth.personal.sign(messageText, accounts[0]);
+        document.getElementById("signedMessage").value = signature;
+    }
+
+    function copySignatureToClipboard() {
+        const signedMessage = document.getElementById("signedMessage");
+        signedMessage.select();
+        document.execCommand("copy");
+        alert("Signature copied to clipboard!");
+    }
+
+    async function checkWalletConnection() {
+        const accounts = await web3.eth.getAccounts();
+        if (accounts.length) {
+            document.getElementById("walletAddress").textContent = "Connected to: " + accounts[0];
+            await displayTokenBalance(accounts[0]);
+            return true;
+        }
+        return false;
+    }
+
+    async function displayTokenBalance(address) {
+        const tokenContract = new web3.eth.Contract(ABI, TOKEN_ADDRESS);
+        const balanceRaw = await tokenContract.methods.balanceOf(address).call();
+        const balance = Number(BigInt(balanceRaw) / BigInt(1e18));
+        document.getElementById("tokenBalance").textContent = `Token Balance: ${balance.toFixed(2)} AIX`;
+    }
+
+    async function initializeApp() {
+        const isConnected = await checkWalletConnection();
+        if (isConnected) {
+            document.getElementById("connectWallet").style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>
