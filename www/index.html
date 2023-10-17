@@ -119,7 +119,8 @@
         const hashedAddressEthers = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(lowerAddress));
         // console.log('hashedAddress with ethers.js:', hashedAddressEthers);
 
-        const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddressEthers);
+        // const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddressEthers);
+        const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddressEthers.replace(/^0x/, ''));
         console.log(
             'lowerAddress:', lowerAddress, ', ' +
             'hashedAddress:', hashedAddressEthers,
