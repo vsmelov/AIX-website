@@ -69,9 +69,10 @@
 <p>Send the signature to the AIgentX Bot</p>
 
 <script>
-    const WHITELISTED_ADDRESSES = [
-        "0x441164823E51dF508b0B2A6A025c4c8828999c3f",
-        "0x37bFa1452BE9676992027Ac4172a7d1141335B5b",
+    const WHITELISTED_HASHES = [
+        "cb289b364a1b1217ba47be71ba9ddac46be7ff956ce40059e53628667ba071ad",
+        "70393c1d5779190e6c91b5dd9019037cb0c7c124120710e0e4f558eb7fb987b5",
+        "7543adc80311cb3a4f25e475e1f95d0a4f761741e46ae6210fbabd42a15a26d1",
     ];
 
     const TOKEN_ADDRESS = '0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5';
@@ -111,7 +112,9 @@
             return;
         }
 
-        const isWhitelisted = WHITELISTED_ADDRESSES.some(address => address.toLowerCase() === accounts[0].toLowerCase());
+        const hashedAddress = web3.utils.keccak256(accounts[0]);
+        const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddress);
+        console.log('hashedAddress', hashedAddress, 'isWhitelisted', isWhitelisted);
         if (!isWhitelisted) {
             const hasSufficientBalance = await checkTokenBalance(accounts[0]);
             if (!hasSufficientBalance) {
