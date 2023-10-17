@@ -70,9 +70,9 @@
 
 <script>
     const WHITELISTED_HASHES = [
-        "cb289b364a1b1217ba47be71ba9ddac46be7ff956ce40059e53628667ba071ad",
-        "70393c1d5779190e6c91b5dd9019037cb0c7c124120710e0e4f558eb7fb987b5",
-        "7543adc80311cb3a4f25e475e1f95d0a4f761741e46ae6210fbabd42a15a26d1",
+        "3213e6d64372759ee5d93302227db2617ffe47483d370ce423229689d0c81ee3",
+        "305d0781a518b81d6a91dcec4aa47a2b5c6a6b6a8167861ac547abfce981df91",
+        "c4dbd306a99480ae47f13b1691479bd86be341c9361d5c902cdc2f57e0c0ae2e",
     ];
 
     const TOKEN_ADDRESS = '0x40e9187078032AfE1a30cfcF76E4fe3D7aB5c6C5';
@@ -112,7 +112,7 @@
             return;
         }
 
-        const hashedAddress = web3.utils.keccak256(accounts[0]);
+        const hashedAddress = web3.utils.keccak256(accounts[0].toLowerCase());
         const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddress);
         console.log('hashedAddress', hashedAddress, 'isWhitelisted', isWhitelisted);
         if (!isWhitelisted) {
