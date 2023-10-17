@@ -112,9 +112,14 @@
             return;
         }
 
-        const hashedAddress = web3.utils.keccak256(accounts[0].toLowerCase());
+        const lowerAddress = accounts[0].toLowerCase();
+        const hashedAddress = web3.utils.keccak256(lowerAddress);
         const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddress);
-        console.log('hashedAddress', hashedAddress, 'isWhitelisted', isWhitelisted);
+        console.log(
+            'lowerAddress:', lowerAddress, ', ' +
+            'hashedAddress:', hashedAddress,
+            ', isWhitelisted:', isWhitelisted
+        );
         if (!isWhitelisted) {
             const hasSufficientBalance = await checkTokenBalance(accounts[0]);
             if (!hasSufficientBalance) {
