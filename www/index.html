@@ -115,15 +115,14 @@
         }
 
         const lowerAddress = accounts[0].toLowerCase();
-        const hashedAddress = web3.utils.keccak256(lowerAddress);
-
+        // const hashedAddress = web3.utils.keccak256(lowerAddress);
         const hashedAddressEthers = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(lowerAddress));
-        console.log('hashedAddress with ethers.js:', hashedAddressEthers);
+        // console.log('hashedAddress with ethers.js:', hashedAddressEthers);
 
-        const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddress);
+        const isWhitelisted = WHITELISTED_HASHES.includes(hashedAddressEthers);
         console.log(
             'lowerAddress:', lowerAddress, ', ' +
-            'hashedAddress:', hashedAddress,
+            'hashedAddress:', hashedAddressEthers,
             ', isWhitelisted:', isWhitelisted
         );
         if (!isWhitelisted) {
